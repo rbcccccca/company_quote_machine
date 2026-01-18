@@ -561,7 +561,7 @@ export default function App() {
     doc.setFontSize(10);
 
     const terms = [
-      "- Price includes GST.",
+      // "- Price includes GST.",
       "- Balance is due in full on the installation completion day.",
     ];
 
@@ -1043,7 +1043,7 @@ export default function App() {
           </div>
 
           <div className="note">
-            Price includes GST.
+            {/* Price includes GST. */}
             <br />
             Balance is due in full on the installation completion day.
           </div>

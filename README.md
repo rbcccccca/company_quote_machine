@@ -1,16 +1,98 @@
-# React + Vite
+# ArchiMart Instant Quote Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A lightweight, browser-based quoting tool built for **ARCHIMART PTY LTD**, designed to quickly generate professional construction quotes for **awnings and decking projects**.
 
-Currently, two official plugins are available:
+This app runs entirely on the frontend, requires **no database**, and produces **downloadable PDF quotes** suitable for sending directly to clients.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Purpose
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This web app is primarily built for **ARCHIMART PTY LTD** to:
 
-## Expanding the ESLint configuration
+- Speed up on-site or office quoting
+- Reduce manual calculation errors
+- Standardise quote format and pricing rules
+- Generate clean, professional PDF quotes instantly
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+It is intended for **internal business use** rather than public self-service.
+
+---
+
+## Key Features
+
+- **Instant area calculation**
+  - Length × Width (metres, supports decimals)
+  - Special note for curved awnings (+0.2m length reminder)
+
+- **Configurable pricing system**
+  - Awning and decking configurations
+  - Automatic unit-rate calculation
+  - Clear separation of base price and add-ons
+
+- **Advanced add-ons support**
+  - Awning-related add-ons (height adjustment, concrete footings, high work, etc.)
+  - Decking-related add-ons (stairs, extra side cladding by area)
+  - Custom manual add-ons (e.g. demolition, rubbish removal)
+
+- **Smart pricing rules**
+  - Deal price rounded **down to the nearest $100** when area ≥ 1 m²
+  - No rounding applied for small-area jobs
+  - Automatic 50% deposit and balance calculation
+
+- **Professional PDF output**
+  - Company details (ABN, phone)
+  - Quote number & date
+  - Client name & site address
+  - Configuration & measurements
+  - Pricing breakdown and terms
+
+- **No data storage**
+  - All calculations happen in-browser
+  - No customer data is saved or uploaded
+
+---
+
+## Built With
+
+- **React + Vite**
+- **jsPDF** (PDF generation)
+- Deployed via **GitHub Pages**
+
+---
+
+## Typical Use Case
+
+1. Enter project, client, and site details  
+2. Input dimensions  
+3. Select configuration  
+4. Add optional items if required  
+5. Download PDF quote  
+6. Send to client  
+
+---
+
+## How to Modify or Update the App
+
+### 1. Modify business logic or pricing
+Most business rules are defined in **`src/App.jsx`**:
+
+- Base pricing:  
+  `const PRICING = [...]`
+
+- Add-on pricing:  
+  `AWNING_ADDONS`  
+  `DECKING_ADDONS`
+
+- Rounding rules:  
+  Look for `roundingApplied` and `dealPrice`
+
+> 🔧 Change numbers here if pricing updates in the future.
+
+---
+
+### 2. Modify PDF layout or wording
+All PDF-related output is inside:
+
+```js
+function downloadPDF() { ... }

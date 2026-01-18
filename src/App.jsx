@@ -319,6 +319,9 @@ export default function App() {
   // Deposit paid flag (shown on UI and written to PDF)
   const [depositPaid, setDepositPaid] = useState(false);
 
+  // GST state: 'inc' for includes, 'exc' for excludes, '' for not set
+  const [gstMode, setGstMode] = useState("");
+
   // Options section mapping (only when config selected)
   const colorOptions = useMemo(() => {
     if (!selectedProduct) return null;
@@ -561,11 +564,11 @@ export default function App() {
     doc.setFontSize(10);
 
     const terms = [
-      // "- Price includes GST.",
+      gstMode === "inc" ? "- Price includes GST." : (gstMode === "exc" ? "- Price excludes GST." : ""),
       "- Balance is due in full on the installation completion day.",
     ];
 
-    const safeTerms = terms.map(t => t.replaceAll("&", ""));
+    const safeTerms = terms.filter(t => t).map(t => t.replaceAll("&", ""));
     const wrapped = safeTerms.flatMap(t => doc.splitTextToSize(t, 175));
     doc.text(wrapped, left + 3, y + 13);
 
@@ -901,6 +904,15 @@ export default function App() {
             <Chip on={!depositPaid} onClick={() => setDepositPaid(false)}>Not paid</Chip>
           </div>
 
+          {/* 8) GST */}
+          <div className="hr" />
+          <h2>8) GST</h2>
+          <div className="smallmuted">Select whether the price includes or excludes GST.</div>
+          <div className="chips" style={{ marginTop: 8 }}>
+            <Chip on={gstMode === "inc"} onClick={() => setGstMode("inc")}>Inc GST</Chip>
+            <Chip on={gstMode === "exc"} onClick={() => setGstMode("exc")}>Excl GST</Chip>
+          </div>
+
           <div className="btnRow" style={{ marginTop: 16 }}>
             <button className="btn primary" onClick={downloadPDF} disabled={!selectedProduct}>
               Download Quote (PDF)
@@ -1043,8 +1055,9 @@ export default function App() {
           </div>
 
           <div className="note">
-            {/* Price includes GST. */}
-            <br />
+            {gstMode === "inc" && "Price includes GST."}
+            {gstMode === "exc" && "Price excludes GST."}
+            {gstMode !== "" && <br />}
             Balance is due in full on the installation completion day.
           </div>
         </div>

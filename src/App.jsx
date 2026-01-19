@@ -64,13 +64,13 @@ const DECK_HOLLOW_COLORS = [
   { id: "Teak", dot: "#a06b3a" },
 ];
 
-const AWNING_SHAPES = [
+const PERGOLA_SHAPES = [
   { id: "Straight", dot: "#aab3c5" },
   { id: "Curved", dot: "#8fd3ff" },
 ];
 
 // --- Add-ons (UI shows CN/EN, PDF writes EN only)
-const AWNING_ADDONS = [
+const PERGOLA_ADDONS = [
   {
     id: "rear_beam_raise",
     labelZh: "后框升高",
@@ -225,7 +225,7 @@ export default function App() {
   // optionals (only valid for certain configuration)
   const [pcColor, setPcColor] = useState("");
   const [deckColor, setDeckColor] = useState("");
-  const [awningShape, setAwningShape] = useState("");
+  const [pergolShape, setPergolShape] = useState("");
 
   // Add-ons state: quantities keyed by id (string -> string)
   const [addonQty, setAddonQty] = useState(() => ({}));
@@ -255,7 +255,7 @@ export default function App() {
   // --- Add-on subtotal calculations
   const relevantAddons = useMemo(() => {
     const list = [];
-    if (isPcRoof) list.push(...AWNING_ADDONS);
+    if (isPcRoof) list.push(...PERGOLA_ADDONS);
     if (isDecking) list.push(...DECKING_ADDONS);
     return list;
   }, [isPcRoof, isDecking]);
@@ -350,7 +350,7 @@ export default function App() {
     const parts = [selectedProduct.label];
 
     if (isPcRoof) {
-      if (awningShape) parts.push(`Awning shape: ${awningShape}`);
+      if (pergolShape) parts.push(`Pergola shape: ${pergolShape}`);
       if (pcColor) parts.push(`PC colour: ${pcColor}`);
     }
     if (isDecking) {
@@ -358,14 +358,14 @@ export default function App() {
     }
 
     return parts.join(" | ");
-  }, [selectedProduct, isPcRoof, isDecking, awningShape, pcColor, deckColor]);
+  }, [selectedProduct, isPcRoof, isDecking, pergolShape, pcColor, deckColor]);
 
   function onSelectProduct(nextId) {
     setProductId(nextId);
     // Reset unrelated optionals/addons when switching
     setPcColor("");
     setDeckColor("");
-    setAwningShape("");
+    setPergolShape("");
 
     // Clear add-on quantities
     setAddonQty({});
@@ -687,15 +687,15 @@ export default function App() {
             )}
           </div>
 
-          {/* Awning shape only when ALU_PC selected */}
+          {/* Pergola shape only when ALU_PC selected */}
           <div className="hr" />
-          <h2>4) Awning shape (optional)</h2>
+          <h2>4) Pergola shape (optional)</h2>
           <div className="chips">
-            {AWNING_SHAPES.map((c) => (
+            {PERGOLA_SHAPES.map((c) => (
               <Chip
                 key={c.id}
-                on={awningShape === c.id}
-                onClick={() => setAwningShape(awningShape === c.id ? "" : c.id)}
+                on={pergolShape === c.id}
+                onClick={() => setPergolShape(pergolShape === c.id ? "" : c.id)}
                 prefix={<ColorDot hex={c.dot} />}
                 disabled={!isPcRoof}
               >
@@ -738,12 +738,12 @@ export default function App() {
 
           {selectedProduct ? (
             <>
-              {/* Awning add-ons */}
+              {/* Pergola add-ons */}
               {isPcRoof && (
                 <>
-                  <div className="smallmuted"><b>Awning add-ons / 雨棚增加项</b></div>
+                  <div className="smallmuted"><b>Pergola add-ons / 遮阳棚增加项</b></div>
                   <div className="chips" style={{ marginTop: 8 }}>
-                    {AWNING_ADDONS.map((a) => {
+                    {PERGOLA_ADDONS.map((a) => {
                       const qty = addonQty[a.id] ?? "";
                       const on = (parseFloat(qty) || 0) > 0;
                       return (
@@ -928,7 +928,7 @@ export default function App() {
                 setProductId("");
                 setPcColor("");
                 setDeckColor("");
-                setAwningShape("");
+                setPergolShape("");
                 setAddonQty({});
                 setCustomAddons([{ name: "", amount: "" }, { name: "", amount: "" }, { name: "", amount: "" }]);
                 setDepositPaid(false);
@@ -977,7 +977,7 @@ export default function App() {
             <div className="v">
               {isPcRoof ? (
                 <>
-                  {awningShape ? `Shape: ${awningShape}` : "Shape: —"}
+                  {pergolShape ? `Shape: ${pergolShape}` : "Shape: —"}
                   <br />
                   {pcColor ? `PC: ${pcColor}` : "PC: —"}
                 </>
